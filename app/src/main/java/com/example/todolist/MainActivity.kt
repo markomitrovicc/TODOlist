@@ -33,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.colorResource
@@ -71,12 +72,10 @@ class MainActivity : ComponentActivity() {
                 ) {
                     OutlinedTextField(
                         value = item,
-                        textStyle = TextStyle(color = Color.Black, fontSize = 30.sp),
+                        textStyle = TextStyle(color = Color.Black),
                         onValueChange = {  text ->
                             item = text
-                        },
-                        modifier = Modifier
-                            .height(35.dp)
+                        }
                     )
 
                     Button(modifier = Modifier
@@ -85,6 +84,7 @@ class MainActivity : ComponentActivity() {
                         onClick = {
                         if (item.isNotBlank() && !listOfItems.contains(item)){
                             listOfItems = listOfItems + item
+                            item = ""
                         }
                     }) {
                         Text("Add")
@@ -95,9 +95,18 @@ class MainActivity : ComponentActivity() {
                 LazyColumn {
                     items(listOfItems) { currentItem ->
                         Column (
-                            modifier = Modifier.padding(vertical = 10.dp)
+                            modifier = Modifier
+                                .padding(vertical = 5.dp)
+                                .border(
+                                    width = 1.dp,
+                                    color = Color.Black,
+                                    shape = RoundedCornerShape(3.dp)
+                                )
+                                .shadow(
+                                    elevation = 3.dp
+                                )
                         ){
-                            ItemRow(currentItem)
+                            Text(currentItem)
                         }
                     }
                 }
@@ -109,25 +118,4 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun ItemRow(text: String) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .border(
-                width = 2.dp,
-                colorResource(R.color.purple_500),
-                shape = RoundedCornerShape(5.dp)
-                )
-            .padding(horizontal = 16.dp)
-    ) {
-        Text(
-            text,
-            modifier = Modifier
-                .fillMaxWidth(),
-            style = TextStyle(fontSize = 30.sp)
-
-        )
-    }
-}
 
